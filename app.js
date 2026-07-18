@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const DATA_KEY='cb_fixed_questions_v3',PROGRESS_KEY='cb_fixed_progress_v1',SETTINGS_KEY='cb_fixed_settings_v1';
+const DATA_KEY='cb_fixed_questions_v4',PROGRESS_KEY='cb_fixed_progress_v1',SETTINGS_KEY='cb_fixed_settings_v1';
 const clone=v=>JSON.parse(JSON.stringify(v));
 let questions=loadQuestions(),progress=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}'),settings=JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}');
 let filtered=[],position=0,figureVisible=false,sourcePageVisible=false,answerVisible=false,mcqSelection=new Set(),editingId=null,pendingImage=null,pendingSourcePage=null;
