@@ -33,6 +33,10 @@
   <label class="search-label">検索<input id="searchInput" type="search" placeholder="問題・解答・解説を検索"></label>
   <div class="filter-buttons"><button id="unitFilterBtn" class="secondary">単元を選択 <span id="unitBadge">全9</span></button><button id="importanceFilterBtn" class="secondary">重要度を選択 <span id="importanceBadge">全3</span></button></div>
   <div class="filter-buttons"><button id="summaryBtn" class="secondary">単元まとめ</button><button id="resetFiltersBtn" class="ghost">絞り込み解除</button></div>
+  <div class="jump-row" role="group" aria-label="問題番号で移動">
+    <label for="jumpNumber">問題番号へ移動</label>
+    <div class="jump-controls"><span>問</span><input id="jumpNumber" type="number" min="1" inputmode="numeric" placeholder="例：213"><button id="jumpBtn" type="button" class="primary">移動</button></div>
+  </div>
 </section>
 
 <section id="emptyState" class="card empty hidden"><h2>該当する問題がありません</h2><p>単元・重要度・学習状況・検索条件を変更してください。</p></section>
@@ -42,8 +46,8 @@
   <p id="sourceText" class="source"></p><p class="wording-note">問題文は講義資料の語句・表現を優先しています。</p>
   <h2 id="questionText"></h2>
   <div class="media-buttons"><button id="figureBtn" class="figure-btn hidden">図・写真を表示</button><button id="sourcePageBtn" class="figure-btn secondary hidden">対応資料ページを表示</button></div>
-  <div id="figureBox" class="figure-box hidden"><img id="figureImage" alt="問題に使用する図・写真"></div>
-  <div id="sourcePageBox" class="figure-box hidden"><div id="sourcePageCaption" class="source-caption"></div><img id="sourcePageImage" alt="対応する資料ページ"></div>
+  <div id="figureBox" class="figure-box hidden"><img id="figureImage" alt="問題に使用する図・写真"><button id="figureCloseBtn" type="button" class="collapse-media-btn">図・写真を閉じる</button></div>
+  <div id="sourcePageBox" class="figure-box hidden"><div id="sourcePageCaption" class="source-caption"></div><img id="sourcePageImage" alt="対応する資料ページ"><button id="sourcePageCloseBtn" type="button" class="collapse-media-btn">対応資料ページを閉じる</button></div>
   <div id="mcqBox" class="mcq-box hidden"></div>
   <button id="answerBtn" class="answer-btn">解答を見る</button>
   <div id="answerBox" class="answer-box hidden"><p class="answer-label">解答</p><p id="answerText" class="answer"></p><p class="answer-label">解説・補足</p><p id="explanationText"></p></div>

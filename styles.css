@@ -2,3 +2,14 @@
 .media-buttons{display:flex;gap:.6rem;flex-wrap:wrap;margin:.6rem 0}.source-caption{font-size:.92rem;color:var(--muted);margin:0 0 .5rem}.figure-box img{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:#fff}
 
 .wording-note{font-size:.82rem;color:var(--muted);margin:.1rem 0 1rem}
+
+/* v3.2: media collapse and question-number jump */
+.jump-row{margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--line)}
+.jump-row>label{display:block;font-size:.9rem;font-weight:700;margin-bottom:.45rem}
+.jump-controls{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:.5rem}
+.jump-controls>span{font-weight:800;color:var(--muted)}
+.jump-controls input{width:100%;min-width:0}
+.collapse-media-btn{display:block;width:100%;margin-top:.65rem;padding:.8rem;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--text);font-weight:700}
+.figure-box{scroll-margin-top:72px}
+#studyCard{scroll-margin-top:12px}
+@media (max-width:480px){.jump-controls{grid-template-columns:auto minmax(0,1fr) auto}.jump-controls button{padding-left:1rem;padding-right:1rem}}
