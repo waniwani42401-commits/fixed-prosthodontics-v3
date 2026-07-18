@@ -1,0 +1,21 @@
+固定性補綴学 暗記アプリ（資料忠実版） GitHub Pages配置
+
+1. ZIPを解凍します。
+2. 新しいPublicリポジトリを作成します。
+3. リポジトリ直下へ index.html / app.js / data.js / styles.css / sw.js / manifest.webmanifest をアップロードします。
+4. GitHub上で assets/figures/.gitkeep、assets/sourcepages/.gitkeep、icons/.gitkeep を作成します。
+5. assets/figures の画像を assets/figures へアップロードします。
+6. assets/sourcepages は100枚を超えるため、2回に分けて全画像を assets/sourcepages へアップロードします。
+7. icons の3画像を icons へアップロードします。
+8. Settings → Pages → Deploy from a branch → main → /(root) → Save。
+
+正しい階層：
+index.html
+app.js
+data.js
+styles.css
+sw.js
+manifest.webmanifest
+assets/figures/...
+assets/sourcepages/...
+icons/...
