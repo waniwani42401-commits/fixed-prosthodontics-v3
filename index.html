@@ -7,9 +7,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="固定補綴">
-  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="manifest" href="./manifest.webmanifest?v=4.1.0">
   <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./styles.css?v=4.1.0">
   <title>固定性補綴学 暗記アプリ</title>
 </head>
 <body>
@@ -79,5 +79,18 @@
 </form></dialog>
 
 <div id="toast" class="toast hidden"></div>
-<script src="./data.js"></script><script src="./app.js"></script>
+<script src="./data.js?v=4.1.0" defer></script>
+<script src="./app.js?v=4.1.0" defer></script>
+<script>
+window.addEventListener('load', () => {
+  window.setTimeout(() => {
+    if (window.__CB_APP_STARTED) return;
+    const box = document.createElement('section');
+    box.className = 'card';
+    box.style.margin = '16px';
+    box.innerHTML = '<h2>アプリを読み込めませんでした</h2><p>古いキャッシュが残っている可能性があります。Safariでページを再読み込みしてください。</p><button type="button" class="primary" onclick="location.reload()">再読み込み</button>';
+    document.body.prepend(box);
+  }, 2500);
+});
+</script>
 </body></html>

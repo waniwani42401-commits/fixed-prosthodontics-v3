@@ -1,10 +1,18 @@
 (()=>{'use strict';
+if(!window.CB_DEFAULT_DATA||!Array.isArray(window.CB_DEFAULT_DATA.questions)||!Array.isArray(window.CB_DEFAULT_DATA.units)){
+  console.error('問題データを読み込めませんでした。');
+  return;
+}
 const DATA_KEY='cb_fixed_questions_v4',PROGRESS_KEY='cb_fixed_progress_v1',SETTINGS_KEY='cb_fixed_settings_v1';
 const clone=v=>JSON.parse(JSON.stringify(v));
-let questions=loadQuestions(),progress=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}'),settings=JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}');
+const readObject=(key)=>{try{const value=JSON.parse(localStorage.getItem(key)||'{}');return value&&typeof value==='object'&&!Array.isArray(value)?value:{}}catch(e){return {}}};
+let questions=loadQuestions(),progress=readObject(PROGRESS_KEY),settings=readObject(SETTINGS_KEY);
 let filtered=[],position=0,figureVisible=false,sourcePageVisible=false,answerVisible=false,mcqSelection=new Set(),editingId=null,pendingImage=null,pendingSourcePage=null;
-let selectedUnits=new Set(settings.units||CB_DEFAULT_DATA.units.map(u=>u.name));
-let selectedImportance=new Set((settings.importance||['1','2','3']).map(String));
+const allUnitNames=CB_DEFAULT_DATA.units.map(u=>u.name),validUnits=new Set(allUnitNames);
+const savedUnits=Array.isArray(settings.units)?settings.units.filter(x=>validUnits.has(x)):[];
+let selectedUnits=new Set(savedUnits.length?savedUnits:allUnitNames);
+const savedImportance=Array.isArray(settings.importance)?settings.importance.map(String).filter(x=>['1','2','3'].includes(x)):[];
+let selectedImportance=new Set(savedImportance.length?savedImportance:['1','2','3']);
 const $=id=>document.getElementById(id);
 const els={resultCount:$('resultCount'),progressText:$('progressText'),progressFill:$('progressFill'),statNew:$('statNew'),statKnown:$('statKnown'),statUnknown:$('statUnknown'),status:$('statusFilter'),order:$('orderFilter'),search:$('searchInput'),jumpNumber:$('jumpNumber'),jumpBtn:$('jumpBtn'),unitBadge:$('unitBadge'),importanceBadge:$('importanceBadge'),card:$('studyCard'),empty:$('emptyState'),number:$('numberChip'),unit:$('unitChip'),importance:$('importanceChip'),source:$('sourceText'),question:$('questionText'),figureBtn:$('figureBtn'),figureBox:$('figureBox'),figure:$('figureImage'),figureCloseBtn:$('figureCloseBtn'),sourcePageBtn:$('sourcePageBtn'),sourcePageBox:$('sourcePageBox'),sourcePageCaption:$('sourcePageCaption'),sourcePageImage:$('sourcePageImage'),sourcePageCloseBtn:$('sourcePageCloseBtn'),mcq:$('mcqBox'),answerBtn:$('answerBtn'),answerBox:$('answerBox'),answer:$('answerText'),explanation:$('explanationText'),position:$('positionText')};
 function loadQuestions(){try{const v=JSON.parse(localStorage.getItem(DATA_KEY));if(Array.isArray(v)&&v.length){const defaults=new Map(CB_DEFAULT_DATA.questions.map(q=>[q.id,q]));return v.map(q=>{const d=defaults.get(q.id);if(d&&(!q.sourcePages||!q.sourcePages.length))q.sourcePages=clone(d.sourcePages||[]);return q})}}catch(e){}return clone(CB_DEFAULT_DATA.questions)}
@@ -46,5 +54,18 @@ function resetFilters(){selectedUnits=new Set(CB_DEFAULT_DATA.units.map(u=>u.nam
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.remove('hidden');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.add('hidden'),2200)}
 $('answerBtn').onclick=showAnswer;$('figureBtn').onclick=toggleFigure;$('figureCloseBtn').onclick=()=>setFigureVisible(false);$('sourcePageBtn').onclick=toggleSourcePage;$('sourcePageCloseBtn').onclick=()=>setSourcePageVisible(false);$('jumpBtn').onclick=jumpToQuestion;els.jumpNumber.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();jumpToQuestion()}});$('prevBtn').onclick=()=>move(-1);$('nextBtn').onclick=()=>move(1);$('knownBtn').onclick=()=>mark('known');$('unknownBtn').onclick=()=>mark('unknown');$('unitFilterBtn').onclick=()=>openCheck('unit');$('importanceFilterBtn').onclick=()=>openCheck('importance');$('summaryBtn').onclick=showSummaries;$('resetFiltersBtn').onclick=resetFilters;els.status.onchange=()=>applyFilters();els.order.onchange=()=>applyFilters();els.search.oninput=()=>applyFilters();$('editBtn').onclick=()=>openEdit('edit');$('addBtn').onclick=()=>openEdit('add');$('deleteBtn').onclick=deleteCurrent;$('exportBtn').onclick=exportBackup;$('resetDataBtn').onclick=resetData;$('closeEditBtn').onclick=$('cancelEditBtn').onclick=()=>$('editDialog').close();
 $('themeBtn').onclick=()=>{document.body.classList.toggle('dark');saveSettings()};if(settings.theme==='dark')document.body.classList.add('dark');
-if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
-applyFilters();})();
+if('serviceWorker'in navigator){
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{
+    const key='cb_sw_reload_v4_1_0';
+    if(sessionStorage.getItem(key))return;
+    sessionStorage.setItem(key,'1');
+    location.reload();
+  });
+  window.addEventListener('load',async()=>{
+    try{
+      const registration=await navigator.serviceWorker.register('./sw.js?v=4.1.0');
+      await registration.update();
+    }catch(error){console.warn('Service Workerの更新に失敗しました。',error)}
+  });
+}
+applyFilters();window.__CB_APP_STARTED=true;})();
