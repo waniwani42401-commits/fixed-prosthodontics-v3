@@ -1,0 +1,10 @@
+固定性補綴学アプリ 復旧アップロード手順
+
+1. GitHubの fixed-prosthodontics-v3 リポジトリを開く
+2. Add file → Upload files
+3. このフォルダ内の index.html / app.js / sw.js をアップロード
+4. 同名ファイルの置換を確認し、Commit changes
+5. 公開後、次のURLをSafariで開く
+   https://waniwani42401-commits.github.io/fixed-prosthodontics-v3/?repair=20260722
+
+注意：ZIPファイル自体をリポジトリへ置くだけでは更新されません。ZIPを展開し、中の3ファイルをアップロードしてください。
